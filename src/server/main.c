@@ -1,5 +1,7 @@
 #include "server.h"
 
+int ss;
+
 int main(int argc, char* argv[])
 {
     if(argc!=2)
@@ -8,28 +10,30 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    int ss = socket(PF_INET,SOCK_STREAM,IPPROTO_TCP);
-    if(ss < 0) perror("socket creation error");
+    signal(SIGINT,sig_handle_s);
 
-    char* pEnd = 0;
-    errno = 0;
-    uint16_t port = strtoul(argv[1],&pEnd,10); //atoi can't detect error
-    if(argv[1] == pEnd || errno == ERANGE || *pEnd!=0){
-        handlePortErr(ss);
+    ss = socket(PF_INET,SOCK_STREAM,IPPROTO_TCP);
+    if(ss < 0){
+        perror("socket creation error");
         return -1;
     }
 
     struct sockaddr_in ss_addr = {0};
-    init_socket(&ss_addr,port);
-    int ret = bind(ss, (struct sockaddr*) &ss_addr, sizeof(ss_addr));
+    int ret = init_socket(&ss_addr,argv[1]);
     if(ret < 0){
-        handleBindErr(ss);
+        handleErr(ss,"socket init error - server");
+        return -1;
+    }
+    
+    ret = bind(ss, (struct sockaddr*) &ss_addr, sizeof(ss_addr));
+    if(ret < 0){
+        handleErr(ss,"BindErr");
         return -1;
     }
 
     ret = listen(ss,BACKLOG);
     if(ret<0){
-        handleListenErr(ss);
+        handleErr(ss,"ListenErr");
         return -1;
     }
 
@@ -38,10 +42,12 @@ int main(int argc, char* argv[])
 
     ret = accept(ss,(struct sockaddr*) &cs_addr,&cs_addr_len);
     if(ret<0){
-        handleAcceptErr(ss);
+        handleErr(ss,"AcceptErr");
         return -1;
     }
 
+    conn_succ_server(&cs_addr);
+    chat_server(ret);
     close(ss);
 
     return 0;

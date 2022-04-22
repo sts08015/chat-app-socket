@@ -1,25 +1,7 @@
 #include "chat.h"
 
-void handlePortErr(int fd)
+void handleErr(int fd,const char const * msg)
 {
-    printf("PORT-NUM ERR\n");
-    close(fd);
-}
-
-void handleBindErr(int fd)
-{
-    printf("BIND ERR\n");
-    close(fd);
-}
-
-void handleListenErr(int fd)
-{
-    printf("LISTEN ERR\n");
-    close(fd);
-}
-
-void handleAcceptErr(int fd)
-{
-    printf("ACCEPT ERR\n");
+    printf("%s\n",msg);
     close(fd);
 }

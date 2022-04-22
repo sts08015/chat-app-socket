@@ -6,12 +6,12 @@
 #include <netinet/in.h>
 #include <errno.h>
 #include <limits.h>
+#include <signal.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+#define MAX_BUF_LEN 200
 
-void handlePortErr(int fd);
-void handleBindErr(int fd);
-void handleListenErr(int fd);
-void handleAcceptErr(int fd);
+void handleErr(int fd,const char const* msg);

@@ -1,4 +1,4 @@
-TOPTARGETS = all clean remake
+TOPTARGETS = all clean
 SUBDIRS = server client
 
 $(TOPTARGETS) : chat.o $(SUBDIRS)

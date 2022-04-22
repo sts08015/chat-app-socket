@@ -13,5 +13,3 @@ $(TARGET) : $(OBJS)
 clean:
 	@rm -f *.o
 	@rm -f ../$(TARGET)
-
-remake: clean all
