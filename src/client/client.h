@@ -1,4 +1,4 @@
 #pragma once
-#include <sys/socket.h>
+#include "../chat.h"
 
 void usage();

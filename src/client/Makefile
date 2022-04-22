@@ -1,11 +1,11 @@
 CC = gcc
 TARGET = chat-client
-OBJS = client.o main.o
+OBJS = ../chat.o client.o main.o
 
 all : $(TARGET)
 
-main.o: client.h client.c main.c
-client.o: client.h
+main.o: ../chat.h ../chat.c client.h client.c main.c
+client.o: ../chat.h ../chat.c client.h
 
 $(TARGET) : $(OBJS)
 	$(CC) -o ../$(@) $(OBJS)

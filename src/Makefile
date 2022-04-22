@@ -1,7 +1,12 @@
 TOPTARGETS = all clean remake
 SUBDIRS = server client
 
-$(TOPTARGETS) : $(SUBDIRS)
+$(TOPTARGETS) : chat.o $(SUBDIRS)
+ifeq ($(MAKECMDGOALS),clean)
+	rm -f *.o
+endif
+
+chat.o : chat.h chat.c
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)

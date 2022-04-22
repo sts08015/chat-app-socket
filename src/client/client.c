@@ -1,4 +1,5 @@
 #include "client.h"
+#include <stdio.h>
 
 void usage()
 {
