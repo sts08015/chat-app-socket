@@ -28,6 +28,8 @@ int init_socket(struct sockaddr_in *sockaddr,char* ip, char* port)
     sockaddr->sin_family = AF_INET;
     sockaddr->sin_port = htons(port_num);
     (sockaddr->sin_addr).s_addr = IP;
+
+    return 0;
 }
 
 void conn_succ_client()
@@ -55,7 +57,7 @@ void chat_client()
             printf("Disconnected\n");
             break;
         }
-        
+
         memset(send_buf,0,MAX_BUF_LEN);
         memset(recv_buf,0,MAX_BUF_LEN);
     }
