@@ -30,7 +30,7 @@ int init_socket(struct sockaddr_in *sockaddr,char* port)
 
 void conn_succ_server(struct sockaddr_in* cs_addr)
 {
-    uint16_t port = cs_addr->sin_port;
+    uint16_t port = ntohs(cs_addr->sin_port);
     char* ip = inet_ntoa(cs_addr->sin_addr);
     printf("Connection from %s:%hu\n",ip,port);
 }
