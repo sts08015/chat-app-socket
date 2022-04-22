@@ -35,7 +35,7 @@ void conn_succ_client()
     printf("Connected\n");
 }
 
-void chat_client(int ss)
+void chat_client()
 {
     uint8_t flag = 1;
     char send_buf[MAX_BUF_LEN] = {0};
@@ -43,18 +43,20 @@ void chat_client(int ss)
 
     while(flag)
     {
-        fgets(send_buf,sizeof(send_buf),stdin);
-        puts(send_buf);
-        int len = strlen(send_buf);
-        send_buf[len-1] = 0;
-        --len;
-        send(ss,send_buf,sizeof(send_buf),0);
-        
-        len = len>4?len:4;
-        if(strncmp(send_buf,"QUIT",len) == 0)
+        flag = send_msg(cs,send_buf);
+        if(flag == 0)
         {
-            flag = 0;
             printf("Disconnected\n");
+            break;
         }
+
+        flag = recv_msg(cs, recv_buf);
+        if(flag == 0){
+            printf("Disconnected\n");
+            break;
+        }
+        
+        memset(send_buf,0,MAX_BUF_LEN);
+        memset(recv_buf,0,MAX_BUF_LEN);
     }
 }

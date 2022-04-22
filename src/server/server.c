@@ -43,15 +43,19 @@ void chat_server(int cs)
     
     while(flag)
     {
-        int s = recv(cs,recv_buf,sizeof(recv_buf),0);
-        //printf("%d\n",s);
-        fputs(recv_buf,stdout);
-        int len = strlen(recv_buf);
-        len = len>4?len:4;
-        if(strncmp(recv_buf,"QUIT",len) == 0){
-            flag = 0;
+        flag = recv_msg(cs, recv_buf);
+        if(flag == 0){
             printf("Disconnected\n");
+            break;
         }
 
+        flag = send_msg(cs,send_buf);
+        if(flag == 0){
+            printf("Disconnected\n");
+            break;
+        }
+        
+        memset(recv_buf,0,MAX_BUF_LEN);
+        memset(send_buf,0,MAX_BUF_LEN);
     }
 }

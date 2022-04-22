@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     }
     
     conn_succ_client();
-    chat_client(ret);
+    chat_client();
 
     close(cs);
     return 0;
