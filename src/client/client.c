@@ -44,6 +44,15 @@ void chat_client(int ss)
     while(flag)
     {
         fgets(send_buf,sizeof(send_buf),stdin);
+        int len = strlen(send_buf);
+        send_buf[len-1] = 0;
         send(ss,send_buf,sizeof(send_buf),0);
+        
+        len = len>4?len:4;
+        if(strncmp(send_buf,"QUIT",len) == 0)
+        {
+            flag = 0;
+            printf("Disconnected\n");
+        }
     }
 }

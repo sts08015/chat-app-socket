@@ -46,5 +46,12 @@ void chat_server(int cs)
         int s = recv(cs,recv_buf,sizeof(recv_buf),0);
         //printf("%d\n",s);
         fputs(recv_buf,stdout);
+        int len = strlen(recv_buf);
+        len = len>4?len:4;
+        if(strncmp(recv_buf,"QUIT",len) == 0){
+            flag = 0;
+            printf("Disconnected\n");
+        }
+
     }
 }
