@@ -6,9 +6,9 @@ void handleErr(int fd,const char const * msg)
     close(fd);
 }
 
-int recv_msg(int fd, char* buf)
+int recv_msg(int fd, char* buf,int maxlen)
 {
-    recv(fd,buf,sizeof(buf),0);
+    recv(fd,buf,maxlen,0);
     fputs(buf,stdout);
     int len = strlen(buf);
     buf[len-1] = 0;
@@ -17,10 +17,10 @@ int recv_msg(int fd, char* buf)
     return strncmp(buf,"QUIT",len);
 }
 
-int send_msg(int fd, char* buf)
+int send_msg(int fd, char* buf, int maxlen)
 {
-    fgets(buf,sizeof(buf),stdin);
-    send(fd,buf,sizeof(buf),0);
+    fgets(buf,maxlen,stdin);
+    send(fd,buf,maxlen,0);
     int len = strlen(buf);
     buf[len-1] = 0;
     --len;

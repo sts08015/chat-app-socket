@@ -15,5 +15,5 @@
 #define MAX_BUF_LEN 200
 
 void handleErr(int fd,const char const* msg);
-int recv_msg(int fd, char* buf);
-int send_msg(int fd, char* buf);
+int recv_msg(int fd, char* buf, int maxlen);
+int send_msg(int fd, char* buf, int maxlen);
