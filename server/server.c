@@ -2,5 +2,5 @@
 
 void usage()
 {
-    printf("./server [PORT-NUM]\n");
+    printf("./chat-server [PORT-NUM]\n");
 }
