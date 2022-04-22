@@ -44,8 +44,10 @@ void chat_client(int ss)
     while(flag)
     {
         fgets(send_buf,sizeof(send_buf),stdin);
+        puts(send_buf);
         int len = strlen(send_buf);
         send_buf[len-1] = 0;
+        --len;
         send(ss,send_buf,sizeof(send_buf),0);
         
         len = len>4?len:4;

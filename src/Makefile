@@ -3,7 +3,7 @@ SUBDIRS = server client
 
 $(TOPTARGETS) : chat.o $(SUBDIRS)
 ifeq ($(MAKECMDGOALS),clean)
-	rm -f *.o
+	@rm -f *.o
 endif
 
 chat.o : chat.h chat.c
