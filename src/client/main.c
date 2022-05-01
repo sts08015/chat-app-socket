@@ -1,38 +1,42 @@
 #include "client.h"
 
-int cs;
+int cs; //socket file descriptor for client
 
 int main(int argc, char* argv[])
 {
-    if(argc!=3){
-        usage();
+    if(argc!=3)
+    {
+        usage();    //check IP and port have given as arguments
         return -1;
     }
 
-    signal(SIGINT,sig_handle_c);
+    signal(SIGINT,sig_handle_c);    //assign SIGINT handler
 
-    cs = socket(PF_INET,SOCK_STREAM,IPPROTO_TCP);
-    if(cs < 0){
-        perror("socket creation error");
+    cs = socket(PF_INET,SOCK_STREAM,IPPROTO_TCP);   //open socket
+    if(cs < 0)  //socket creation faliure
+    {
+        perror("socket creation error");    //print error message
         return -1;
     }
     
     struct sockaddr_in ss_addr = {0};
-    int ret = init_socket(&ss_addr,argv[1],argv[2]);
-    if(ret<0){
-        handleErr(cs, "socket init error - client");
+    int ret = init_socket(&ss_addr,argv[1],argv[2]);    //initialize server's info
+    if(ret<0)   //initializing failed
+    {
+        handleErr(cs, "socket init error - client");    //print err msg and close socket
         return -1;
     }
 
-    ret = connect(cs,(struct sockaddr*) &ss_addr,sizeof(ss_addr));
-    if(ret<0){
-        handleErr(cs,"connect error");
+    ret = connect(cs,(struct sockaddr*) &ss_addr,sizeof(ss_addr));  //make connection with server
+    if(ret<0)   //connection failed
+    {
+        handleErr(cs,"connect error");  //print err msg and close socket
         return -1;
     }
     
-    conn_succ_client();
-    chat_client();
+    conn_succ_client(); //print connection success string
+    chat_client();  //chat with server
 
-    close(cs);
+    close(cs);  //close socket after chatting is over
     return 0;
 }

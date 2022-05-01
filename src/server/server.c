@@ -2,17 +2,17 @@
 
 void sig_handle_s(int signo)
 {
-    if(signo == SIGINT)
+    if(signo == SIGINT) //handle SIGINT
     {
-        close(ss);
-        puts("");
-        exit(1);
+        close(ss);  //close open socket
+        puts("");   //to maintain terminal allignment
+        exit(1);  //terminate process  
     }
 }
 
 void usage()
 {
-    printf("./chat-server [PORT-NUM]\n");
+    printf("./chat-server [PORT-NUM]\n");   //show usage
 }
 
 int init_socket(struct sockaddr_in *sockaddr,char* port)
@@ -20,19 +20,19 @@ int init_socket(struct sockaddr_in *sockaddr,char* port)
     char* pEnd = 0;
     errno = 0;
     uint16_t port_num = strtoul(port,&pEnd,10); //atoi can't detect error
-    if(port == pEnd || errno == ERANGE || *pEnd!=0) return -1;
-    sockaddr->sin_family = AF_INET;
-    sockaddr->sin_port = htons(port_num);
-    (sockaddr->sin_addr).s_addr = htonl(INADDR_ANY);
+    if(port == pEnd || errno == ERANGE || *pEnd!=0) return -1;  //strtoul failure
+    sockaddr->sin_family = AF_INET; //IPv4
+    sockaddr->sin_port = htons(port_num);   //transform port from host order to network order
+    (sockaddr->sin_addr).s_addr = htonl(INADDR_ANY);    //0.0.0.0
 
     return 0;
 }
 
 void conn_succ_server(struct sockaddr_in* cs_addr)
 {
-    uint16_t port = ntohs(cs_addr->sin_port);
-    char* ip = inet_ntoa(cs_addr->sin_addr);
-    printf("Connection from %s:%hu\n",ip,port);
+    uint16_t port = ntohs(cs_addr->sin_port);   //transform port from network order to host order
+    char* ip = inet_ntoa(cs_addr->sin_addr);    //transform IP from 32bit integer to dot-separated format
+    printf("Connection from %s:%hu\n",ip,port); //server connection success message
 }
 
 void chat_server(int cs)
@@ -43,18 +43,21 @@ void chat_server(int cs)
     
     while(flag)
     {
-        flag = recv_msg(cs, recv_buf,sizeof(recv_buf));
-        if(flag == 0){
-            printf("Disconnected\n");
+        flag = recv_msg(cs, recv_buf,sizeof(recv_buf)); //server receives the message first
+        if(flag == 0)
+        {
+            printf("Disconnected\n");   //flag==0 means QUIT has received
             break;
         }
 
-        flag = send_msg(cs,send_buf,sizeof(send_buf));
-        if(flag == 0){
-            printf("Disconnected\n");
+        flag = send_msg(cs,send_buf,sizeof(send_buf));  //client transmits the message after receiving is completed
+        if(flag == 0)
+        {
+            printf("Disconnected\n");   //flag==0 means QUIT has transmitted
             break;
         }
 
+        //initialize used buffer to prevent misusage of leftover information
         memset(recv_buf,0,MAX_BUF_LEN);
         memset(send_buf,0,MAX_BUF_LEN);
     }
