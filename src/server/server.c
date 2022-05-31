@@ -5,6 +5,7 @@ void sig_handle_s(int signo)
     if(signo == SIGINT) //handle SIGINT
     {
         close(ss);  //close open socket
+        if(scs!=-1) close(scs);
         puts("");   //to maintain terminal allignment
         exit(1);  //terminate process  
     }

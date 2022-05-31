@@ -8,6 +8,8 @@ extern int ss;  //global variable assigned at main.c
 /*
     function to close open socket when SIGINT occurs
 */
+extern int scs;
+
 void sig_handle_s(int signo);
 /*
     function to print correct usage of the program when the user gave wrong arguments

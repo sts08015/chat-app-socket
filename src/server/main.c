@@ -1,6 +1,7 @@
 #include "server.h"
 
 int ss; //socket file descriptor for server
+int scs = -1;
 
 int main(int argc, char* argv[])
 {
@@ -44,15 +45,16 @@ int main(int argc, char* argv[])
     struct sockaddr_in cs_addr = {0};
     socklen_t cs_addr_len = sizeof(cs_addr);
 
-    ret = accept(ss,(struct sockaddr*) &cs_addr,&cs_addr_len);  //accept connection
-    if(ret<0)   //accept failed
+    scs = accept(ss,(struct sockaddr*) &cs_addr,&cs_addr_len);  //accept connection
+    if(conn_succ_server<0)   //accept failed
     {
         handleErr(ss,"AcceptErr");  //print err msg and close socket
         return -1;
     }
 
     conn_succ_server(&cs_addr); //print connection success string
-    chat_server(ret);   //chat with client
+    chat_server(scs);   //chat with client
     close(ss);  //close socket after chatting is over
+    close(scs);
     return 0;
 }
