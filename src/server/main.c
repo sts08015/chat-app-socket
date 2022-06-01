@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     socklen_t cs_addr_len = sizeof(cs_addr);
 
     scs = accept(ss,(struct sockaddr*) &cs_addr,&cs_addr_len);  //accept connection
-    if(conn_succ_server<0)   //accept failed
+    if(scs<0)   //accept failed
     {
         handleErr(ss,"AcceptErr");  //print err msg and close socket
         return -1;
